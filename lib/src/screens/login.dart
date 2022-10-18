@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:letch/src/components/rounded_password_input.dart';
+import 'package:hiddplace/src/components/rounded_password_input.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../components/rounded_input.dart';

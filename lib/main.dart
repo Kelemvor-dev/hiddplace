@@ -1,6 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:letch/src/app.dart';
+import 'package:hiddplace/src/app.dart';
 // ignore: depend_on_referenced_packages
 import 'package:page_transition/page_transition.dart';
 import 'package:lottie/lottie.dart';
@@ -49,7 +49,7 @@ class SplashScreen extends StatelessWidget {
                   color: const Color(0xff261E17)),
             ),
           ),
-          Lottie.asset('assets/letch_animated.json'), // se puede usar imagenes
+          Lottie.asset('assets/hiddplace_animated.json'), // se puede usar imagenes
         ],
       ),
       backgroundColor: const Color(0xffF2DCC2),

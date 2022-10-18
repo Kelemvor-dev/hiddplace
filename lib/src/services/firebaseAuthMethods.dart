@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:letch/src/screens/home.dart';
-import 'package:letch/utils/showSnackbar.dart';
+import 'package:hiddplace/src/screens/home.dart';
+import 'package:hiddplace/utils/showSnackbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:letch/src/screens/login.dart';
+import 'package:hiddplace/src/screens/login.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});

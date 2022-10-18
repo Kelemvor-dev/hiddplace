@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:letch/src/screens/home.dart';
-import 'package:letch/src/screens/login.dart';
-import 'package:letch/src/services/firebaseAuthMethods.dart';
+import 'package:hiddplace/src/screens/home.dart';
+import 'package:hiddplace/src/screens/login.dart';
+import 'package:hiddplace/src/services/firebaseAuthMethods.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
