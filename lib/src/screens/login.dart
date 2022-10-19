@@ -94,7 +94,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               right: 0,
               child: Container(
                 width: size.width,
-                height: 500,
+                height: 450,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     color: kSecundaryColor),
@@ -122,12 +122,11 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             fontStyle: FontStyle.italic,
                             color: kPrimaryColor),
                       ),
-                      const SizedBox(height: 40),
                       Image.asset(
                         'assets/logo.png',
                         width: 150,
                       ),
-                      const SizedBox(height: 150),
+                      const SizedBox(height: 140),
                       RoundedInput(
                           controller: emailController,
                           bgcolor: kPrimaryColor,
@@ -139,7 +138,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           controller: passwordController,
                           hint: "Contraseña",
                           bgColor: kPrimaryColor),
-                      const SizedBox(height: 20),
                       InkWell(
                         onTap: () {
                           loginUser();
