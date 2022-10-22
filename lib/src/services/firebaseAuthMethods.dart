@@ -1,14 +1,18 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hiddplace/src/screens/home.dart';
 import 'package:hiddplace/utils/showSnackbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../utils/alerts.dart';
 
 class FirebaseAuthMethods {
+  //Firebase auth instance
   final FirebaseAuth _auth;
   final usersRef = FirebaseFirestore.instance.collection('users');
   final auth = FirebaseAuth.instance;
@@ -31,7 +35,7 @@ class FirebaseAuthMethods {
     required String name,
     required String lastname,
     required String phone,
-    required String imageUrl,
+    required XFile imageUrl,
     required String email,
     required String password,
     required BuildContext context,
@@ -41,15 +45,17 @@ class FirebaseAuthMethods {
         email: email,
         password: password,
       );
-      await saveFirestoreProfile(context, name, lastname, phone, imageUrl, email);
+      await saveFirestoreProfile(
+          context, name, lastname, phone, imageUrl, email);
     } on FirebaseAuthException catch (e) {
       // if you want to display your own custom error message
       if (e.code == 'weak-password') {
-        Alert.alertAuth(context,"La contraseña proporcionada es demasiado débil.");
+        Alert.alertAuth(
+            context, "La contraseña proporcionada es demasiado débil.");
       } else if (e.code == 'email-already-in-use') {
-        Alert.alertAuth(context,"Este email ya se encuentra en uso.");
+        Alert.alertAuth(context, "Este email ya se encuentra en uso.");
       } else if (e.code == 'unknown') {
-        Alert.alertAuth(context,"Alguno de los campos esta vacio.");
+        Alert.alertAuth(context, "Alguno de los campos esta vacio.");
       }
       if (e.code != 'weak-password' &&
           e.code != 'email-already-in-use' &&
@@ -60,7 +66,7 @@ class FirebaseAuthMethods {
       }
     }
   }
-
+  String imageurl = "";
   // Login con email y contraseña
   Future<void> loginWithEmail({
     required String email,
@@ -81,15 +87,19 @@ class FirebaseAuthMethods {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'unknown') {
-        Alert.alertAuth(context,"Alguno de los campos esta vacio.");
-      } else if(e.code == 'user-not-found'){
-        Alert.alertAuth(context,'Este usuario no se encuentra en nuestro sistema.');
-      } else if(e.code == 'invalid-email'){
-        Alert.alertAuth(context,'El E-mail es invalido.');
-      }else if(e.code == 'wrong-password'){
-        Alert.alertAuth(context,'La contraseña es invalida.');
+        Alert.alertAuth(context, "Alguno de los campos esta vacio.");
+      } else if (e.code == 'user-not-found') {
+        Alert.alertAuth(
+            context, 'Este usuario no se encuentra en nuestro sistema.');
+      } else if (e.code == 'invalid-email') {
+        Alert.alertAuth(context, 'El E-mail es invalido.');
+      } else if (e.code == 'wrong-password') {
+        Alert.alertAuth(context, 'La contraseña es invalida.');
       }
-      if (e.code != 'unknown' && e.code != 'user-not-found' && e.code != 'invalid-email' && e.code != 'wrong-password') {
+      if (e.code != 'unknown' &&
+          e.code != 'user-not-found' &&
+          e.code != 'invalid-email' &&
+          e.code != 'wrong-password') {
         print(e.code);
         Alert.alertAuth(context, e.message);
         // showSnackBar(context, e.message!);
@@ -110,10 +120,24 @@ class FirebaseAuthMethods {
   //Crear perfil en Base de datos
 
   Future<void> saveFirestoreProfile(BuildContext context, String name,
-      String lastname, String phone, String imageUrl, String email) async {
+      String lastname, String phone, XFile imageUrl, String email) async {
     final userAuth = FirebaseAuth.instance.currentUser;
+    final userID = userAuth?.uid;
+    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
     final DocumentSnapshot doc = await usersRef.doc(userAuth?.uid).get();
-
+    //Instancia FireStorange
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirImages = referenceRoot.child('/users/$userID');
+    Reference referenceImagenToUpload = referenceDirImages.child(uniqueFileName);
+    //subir imagen a firestorange
+    if (imageUrl != null) {
+      try {
+        await referenceImagenToUpload.putFile(File(imageUrl!.path));
+        imageurl = await referenceImagenToUpload.getDownloadURL();
+      } on FirebaseException catch (e) {
+        print(e.message);
+      }
+    }
     if (!doc.exists) {
       usersRef.doc(userAuth?.uid).set({
         'id': userAuth?.uid,
@@ -121,7 +145,7 @@ class FirebaseAuthMethods {
         'lastname': lastname,
         'email': email,
         'phone': phone,
-        'photoUrl': imageUrl,
+        'photoUrl': imageurl,
         'timestamp': timestamp,
       });
     }

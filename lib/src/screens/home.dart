@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -18,21 +19,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  final auth = FirebaseAuth.instance;
   final userAuth = FirebaseAuth.instance.currentUser;
   final userId = FirebaseAuth.instance.currentUser?.uid;
 
   late AnimationController animationController;
   Duration animationDuration = const Duration(milliseconds: 270);
-
-  final List<Widget> _tabItems = [
-    const ChatScreen(),
-    const PublicationScreen(),
-    const ProfileScreen()
-  ];
-  int _page = 1;
-
-  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
   void initState() {
@@ -43,6 +34,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     animationController =
         AnimationController(vsync: this, duration: animationDuration);
   }
+
+  final List<Widget> _tabItems = [
+    const ChatScreen(),
+    const PublicationScreen(),
+    const ProfileScreen()
+  ];
+  int _page = 1;
+
+  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+
 
   @override
   void dispose() {

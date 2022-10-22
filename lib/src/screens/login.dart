@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,20 +19,21 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
+  List<XFile>? _imageFile;
   //Controladores para enviar informacion
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController lastnameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController imageUrlController = TextEditingController();
+
 
   void signUpUser() async {
     context.read<FirebaseAuthMethods>().signUpWithEmail(
           name: nameController.text,
           lastname: lastnameController.text,
           phone: phoneController.text,
-          imageUrl: imageUrlController.text,
+          imageUrl: _imageFile![0],
           email: emailController.text,
           password: passwordController.text,
           context: context,
@@ -67,7 +69,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   }
 
   //image piker
-  List<XFile>? _imageFile;
+
   void _setImageFileListFromFile(XFile? value) {
     _imageFile = value == null ? null : <XFile>[value];
   }
