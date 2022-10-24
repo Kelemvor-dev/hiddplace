@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hiddplace/src/providers/profile.dart';
 import 'package:hiddplace/src/screens/home.dart';
 import 'package:hiddplace/src/screens/login.dart';
 import 'package:hiddplace/src/services/firebaseAuthMethods.dart';
@@ -20,17 +21,20 @@ class App extends StatelessWidget {
           create: (context) => context.read<FirebaseAuthMethods>().authState,
           initialData: null,
         ),
+          ChangeNotifierProvider(
+            create: (_) => ProfileData(),
+
+        )
       ],
       child: MaterialApp(
-        title: 'Flutter Firebase Auth Demo',
+        title: 'Hiddplace',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const AuthWrapper(),
+        initialRoute: 'home',
         debugShowCheckedModeBanner: false,
-        routes: const {
-          //Ejemplo de ruta
-          // EmailPasswordSignup.routeName: (context) => const EmailPasswordSignup(),
+        routes: {
+          'home': (context) => const AuthWrapper(),
         },
       ),
     );
@@ -45,7 +49,7 @@ class AuthWrapper extends StatelessWidget {
     final firebaseUser = context.watch<User?>();
 
     if (firebaseUser != null) {
-      return Home();
+      return const Home();
     }
     return const Login();
   }

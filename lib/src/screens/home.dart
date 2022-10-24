@@ -6,10 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:hiddplace/constants.dart';
 import 'package:hiddplace/src/components/navbar/drawer.dart';
 import 'package:hiddplace/src/components/navbar/navbar.dart';
+import 'package:hiddplace/src/providers/profile.dart';
 import 'package:hiddplace/src/screens/chat/chatScreen.dart';
 import 'package:hiddplace/src/screens/login.dart';
 import 'package:hiddplace/src/screens/publications/publicationScreen.dart';
 import 'package:hiddplace/src/screens/users/profileScreen.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -33,6 +35,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
     animationController =
         AnimationController(vsync: this, duration: animationDuration);
+    //Llamamos la informacion del perfil en la base de datos(Firestore) con Provider
+    Provider.of<ProfileData>(context, listen: false).getProfile();
   }
 
   final List<Widget> _tabItems = [
@@ -43,7 +47,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   int _page = 1;
 
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-
 
   @override
   void dispose() {
