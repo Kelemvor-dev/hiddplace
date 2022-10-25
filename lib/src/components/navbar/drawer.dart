@@ -6,14 +6,10 @@ import 'package:hiddplace/constants.dart';
 import 'package:hiddplace/src/components/navbar/drawer-tile.dart';
 import 'package:hiddplace/src/screens/login.dart';
 
-
 class NowDrawer extends StatelessWidget {
   final String currentPage;
 
-
   const NowDrawer({super.key, required this.currentPage});
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -36,19 +32,16 @@ class NowDrawer extends StatelessWidget {
                   children: [
                     Text(
                       'Hiddplace',
-                      style: GoogleFonts.pacifico(
+                      style: GoogleFonts.montserrat(
                           textStyle: Theme.of(context).textTheme.headline4,
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.italic,
                           color: UiColors.white),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: IconButton(
-                          icon: Icon(Icons.menu,
-                              color: UiColors.white.withOpacity(0.82),
-                              size: 24.0),
+                          icon: Icon(Icons.menu, color: UiColors.white.withOpacity(0.82), size: 24.0),
                           onPressed: () {
                             Navigator.of(context).pop();
                           }),
@@ -82,7 +75,6 @@ class NowDrawer extends StatelessWidget {
                   iconColor: UiColors.warning,
                   title: "Editar Perfil",
                   isSelected: currentPage == "EditProfile" ? true : false),
-
             ],
           ),
         ),
@@ -94,13 +86,9 @@ class NowDrawer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Divider(
-                      height: 4,
-                      thickness: 0,
-                      color: UiColors.white.withOpacity(0.8)),
+                  Divider(height: 4, thickness: 0, color: UiColors.white.withOpacity(0.8)),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(top: 16.0, left: 16, bottom: 8),
+                    padding: const EdgeInsets.only(top: 16.0, left: 16, bottom: 8),
                     child: Text("CONFIGURACIONES",
                         style: TextStyle(
                           color: UiColors.white.withOpacity(0.8),
@@ -109,15 +97,13 @@ class NowDrawer extends StatelessWidget {
                   ),
                   DrawerTile(
                       icon: FontAwesomeIcons.powerOff,
-                      onTap: (){
+                      onTap: () {
                         auth.signOut();
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => const Login()));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Login()));
                       },
                       iconColor: UiColors.muted,
                       title: "Cerrar sesión",
-                      isSelected:
-                          currentPage == "Getting started" ? true : false),
+                      isSelected: currentPage == "Getting started" ? true : false),
                 ],
               )),
         ),

@@ -1,11 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hiddplace/constants.dart';
 import 'package:hiddplace/src/components/navbar/drawer.dart';
 import 'package:hiddplace/src/components/navbar/navbar.dart';
 import 'package:hiddplace/src/components/rounded_input.dart';
-import 'package:hiddplace/src/components/rounded_password_input.dart';
 import 'package:hiddplace/src/providers/profile.dart';
 import 'package:hiddplace/src/services/firebaseAuthMethods.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';

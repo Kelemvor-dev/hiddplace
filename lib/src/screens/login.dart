@@ -93,8 +93,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               right: 0,
               child: Container(
                 width: size.width,
-                height: 450,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: kSecundaryColor),
+                height: 390,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: kPrimaryColor),
               )),
           // Formulario de Iniciar sesión
           AnimatedOpacity(
@@ -107,26 +107,34 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   width: size.width,
                   height: defaultLoginSize,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         'Bienvenido a Hiddplace',
-                        style: GoogleFonts.pacifico(
-                            textStyle: Theme.of(context).textTheme.headline4,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.italic,
-                            color: kPrimaryColor),
+                        style: GoogleFonts.montserrat(
+                            textStyle: Theme.of(context).textTheme.headline4, fontSize: 24, fontWeight: FontWeight.w400, color: UiColors.white),
                       ),
+                      const SizedBox(height: 30),
                       Image.asset(
                         'assets/logo.png',
                         width: 150,
                       ),
-                      const SizedBox(height: 140),
+                      const SizedBox(height: 110),
                       RoundedInput(
-                          controller: emailController, bgcolor: kPrimaryColor, color: kPrimaryColor, hint: "E-mail", icon: Icons.mail, isEmail: true),
-                      RoundedPasswordInput(controller: passwordController, hint: "Contraseña", bgColor: kPrimaryColor),
+                          controller: emailController,
+                          bgcolor: kRegisterBgColor,
+                          color: kPrimaryColor,
+                          hint: "E-mail",
+                          icon: Icons.mail,
+                          isEmail: true),
+                      RoundedPasswordInput(
+                        controller: passwordController,
+                        hint: "Contraseña",
+                        bgColor: kRegisterBgColor,
+                        color: kPrimaryColor,
+                      ),
+                      const SizedBox(height: 10),
                       InkWell(
                         onTap: () {
                           loginUser();
@@ -140,7 +148,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           child: const Text(
                             "Iniciar sesión",
                             style: TextStyle(
-                              color: kSecundaryColor,
+                              color: UiColors.white,
                               fontSize: 18,
                             ),
                           ),
@@ -184,16 +192,16 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 40),
                         Text(
                           'Registro',
-                          style: GoogleFonts.pacifico(
+                          style: GoogleFonts.montserrat(
                               textStyle: Theme.of(context).textTheme.headline4,
                               fontSize: 24,
                               fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.italic,
                               color: kPrimaryColor),
                         ),
+                        const SizedBox(height: 10),
                         Stack(
                           children: [
                             Container(
@@ -229,39 +237,38 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         RoundedInput(
                             controller: nameController,
                             bgcolor: kPrimaryColor,
-                            color: kPrimaryColor,
+                            color: UiColors.white,
                             hint: "Nombres",
                             icon: Icons.info_outline,
                             isEmail: false),
                         RoundedInput(
                             controller: lastnameController,
                             bgcolor: kPrimaryColor,
-                            color: kPrimaryColor,
+                            color: UiColors.white,
                             hint: "Apellidos",
                             icon: Icons.info_outline,
                             isEmail: false),
                         RoundedInput(
                             controller: phoneController,
                             bgcolor: kPrimaryColor,
-                            color: kPrimaryColor,
+                            color: UiColors.white,
                             hint: "Telefono",
                             icon: Icons.info_outline,
                             isEmail: false),
-                        // RoundedInput(
-                        //     controller: imageUrlController,
-                        //     bgcolor: kPrimaryColor,
-                        //     color: kPrimaryColor,
-                        //     hint: "Imagen",
-                        //     icon: Icons.info_outline,
-                        //     isEmail: false),
                         RoundedInput(
                             controller: emailController,
                             bgcolor: kPrimaryColor,
-                            color: kPrimaryColor,
+                            color: UiColors.white,
                             hint: "E-mail",
                             icon: Icons.mail,
                             isEmail: true),
-                        RoundedPasswordInput(controller: passwordController, hint: "Contraseña", bgColor: kPrimaryColor),
+                        RoundedPasswordInput(
+                          controller: passwordController,
+                          hint: "Contraseña",
+                          bgColor: kPrimaryColor,
+                          color: UiColors.white,
+                        ),
+                        const SizedBox(height: 10),
                         InkWell(
                           onTap: () {
                             signUpUser();
@@ -275,7 +282,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             child: const Text(
                               "Regístrate",
                               style: TextStyle(
-                                color: kSecundaryColor,
+                                color: UiColors.white,
                                 fontSize: 18,
                               ),
                             ),
@@ -300,17 +307,17 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   color: kPrimaryColor,
                   border: Border.all(
                     color: kRegisterBgColor,
-                    width: 4,
+                    width: 2,
                   ),
                 ),
                 width: size.width,
-                height: size.height * 0.1,
+                height: 60,
                 margin: const EdgeInsets.symmetric(vertical: 50),
                 alignment: Alignment.center,
                 child: IconButton(
                   icon: const Icon(
                     Icons.close,
-                    color: kSecundaryColor,
+                    color: UiColors.white,
                   ),
                   onPressed: isLogin
                       ? null

@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'input_container.dart';
 
-class RoundedInput extends StatelessWidget {
+class RoundedTextarea extends StatelessWidget {
 
   final IconData icon;
   final String hint;
   final Color color;
   final Color bgcolor;
-  final bool isEmail;
   final TextEditingController controller;
 
-  const RoundedInput(
+  const RoundedTextarea(
       {Key? key,
       required this.icon,
       required this.hint,
       required this.color,
       required this.bgcolor,
-      required this.isEmail,
       required this.controller,
       })
       : super(key: key);
@@ -28,15 +26,17 @@ class RoundedInput extends StatelessWidget {
     return InputContainer(
       bgColor: bgcolor,
       child: TextField(
-          style: TextStyle(color: color),
+          minLines: 6,
+          maxLines: null,
+          keyboardType: TextInputType.multiline,
           controller: controller,
           cursorColor: color,
-          keyboardType:
-              isEmail ? TextInputType.emailAddress : TextInputType.text,
           decoration: InputDecoration(
-            icon: Icon(icon, color: color),
+            prefixIcon: Container(
+                transform: Matrix4.translationValues(-12, -48.0, 0.0),
+                child:Icon(icon, color: color)
+            ),
             hintText: hint,
-            hintStyle: TextStyle(color: color),
             border: InputBorder.none,
           )),
 

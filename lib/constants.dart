@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const kPrimaryColor = Color(0xff261E17);
 const kBackgroundColor = Color(0XFF594D42);
-const kSecundaryColor = Color(0xFFF2DCC2);
+const kSecundaryColor = Color(0xFFEDEAE3);
 const kRegisterBgColor = Color(0xFFEDEAE3);
 
 class UiColors {
@@ -73,4 +73,20 @@ class UiColors {
   static const Color socialTwitter = Color.fromRGBO(91, 192, 222, 1.0);
 
   static const Color socialDribbble = Color.fromRGBO(234, 76, 137, 1.0);
+
+  static const MaterialColor kToWhite = MaterialColor(
+    0xffe55f48, // 0% comes in here, this will be color picked if no shade is selected when defining a Color property which doesn’t require a swatch.
+    <int, Color>{
+      50: Color(0xffffffff), //10%
+      100: Color(0xffffffff), //20%
+      200: Color(0xffffffff), //30%
+      300: Color(0xffffffff), //40%
+      400: Color(0xffffffff), //50%
+      500: Color(0xffffffff), //60%
+      600: Color(0xffffffff), //70%
+      700: Color(0xffffffff), //80%
+      800: Color(0xffffffff), //90%
+      900: Color(0xffffffff), //100%
+    },
+  );
 }

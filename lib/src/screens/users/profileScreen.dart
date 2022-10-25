@@ -47,26 +47,28 @@ class _ProfileState extends State<ProfileScreen> {
                               child: Column(
                                 children: [
                                   if (context.watch<ProfileData>().photoUrl == '') ...[
-                                    AvatarView(
+                                    const AvatarView(
                                       radius: 60,
                                       borderWidth: 8,
                                       borderColor: kSecundaryColor,
                                       avatarType: AvatarType.CIRCLE,
                                       backgroundColor: Colors.white,
                                       imagePath: "assets/images/profile.jpeg",
-                                      placeHolder: Container(
-                                        child: Icon(Icons.person, size: 50,),
+                                      placeHolder: Icon(
+                                        Icons.person,
+                                        size: 50,
                                       ),
-                                      errorWidget: Container(
-                                        child: Icon(Icons.error, size: 50,),
+                                      errorWidget: Icon(
+                                        Icons.error,
+                                        size: 50,
                                       ),
                                     ),
                                   ] else ...[
-                                    CircleAvatar(backgroundImage: NetworkImage(context.watch<ProfileData>().photoUrl ?? ''), radius: 65.0)
+                                    CircleAvatar(backgroundImage: NetworkImage(context.watch<ProfileData>().photoUrl), radius: 65.0)
                                   ],
                                   Padding(
                                     padding: const EdgeInsets.only(top: 24.0),
-                                    child: Text('${context.watch<ProfileData>().name} ${context.watch<ProfileData>().lastname}' ?? '',
+                                    child: Text('${context.watch<ProfileData>().name} ${context.watch<ProfileData>().lastname}',
                                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 22)),
                                   ),
                                   Padding(

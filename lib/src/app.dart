@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hiddplace/constants.dart';
 import 'package:hiddplace/src/providers/profile.dart';
 import 'package:hiddplace/src/screens/home.dart';
 import 'package:hiddplace/src/screens/login.dart';
+import 'package:hiddplace/src/screens/publications/createPublicationScreen.dart';
 import 'package:hiddplace/src/screens/users/editProfile.dart';
 import 'package:hiddplace/src/services/firebaseAuthMethods.dart';
 import 'package:provider/provider.dart';
@@ -30,13 +32,14 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'Hiddplace',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: UiColors.kToWhite,
         ),
         initialRoute: 'home',
         debugShowCheckedModeBanner: false,
         routes: {
           'home': (context) => const AuthWrapper(),
           'editProfile': (context) => const EditProfileScreen(),
+          'createPublication': (context) => const CreatePublicationScreen(),
         },
       ),
     );
