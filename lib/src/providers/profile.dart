@@ -8,6 +8,15 @@ class ProfileData with ChangeNotifier {
   String _uid = '';
   String _name = '';
   String _lastname = '';
+  String _phone = '';
+
+  String get phone => _phone;
+
+  set phone(String value) {
+    _phone = value;
+    notifyListeners();
+  }
+
   String _photoUrl = '';
 
   Future getProfile() async {
@@ -17,6 +26,7 @@ class ProfileData with ChangeNotifier {
         await FirebaseFirestore.instance.collection('users').doc(_uid).get();
     _name = userDoc.get('name');
     _lastname = userDoc.get('lastname');
+    _phone = userDoc.get('phone');
     _photoUrl = userDoc.get('photoUrl');
   }
 

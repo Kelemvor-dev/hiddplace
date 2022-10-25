@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -8,7 +7,6 @@ import 'package:hiddplace/src/components/navbar/drawer.dart';
 import 'package:hiddplace/src/components/navbar/navbar.dart';
 import 'package:hiddplace/src/providers/profile.dart';
 import 'package:hiddplace/src/screens/chat/chatScreen.dart';
-import 'package:hiddplace/src/screens/login.dart';
 import 'package:hiddplace/src/screens/publications/publicationScreen.dart';
 import 'package:hiddplace/src/screens/users/profileScreen.dart';
 import 'package:provider/provider.dart';

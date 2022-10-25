@@ -66,9 +66,7 @@ class NowDrawer extends StatelessWidget {
                   icon: FontAwesomeIcons.house,
                   onTap: () {
                     if (currentPage != "Home") {
-                      auth.signOut();
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => const Login()));
+                      Navigator.pushNamed(context, 'home');
                     }
                   },
                   iconColor: UiColors.white,
@@ -77,13 +75,13 @@ class NowDrawer extends StatelessWidget {
               DrawerTile(
                   icon: FontAwesomeIcons.user,
                   onTap: () {
-                    if (currentPage != "Profile") {
-                      Navigator.pushReplacementNamed(context, '/profile');
+                    if (currentPage != "EditProfile") {
+                      Navigator.pushNamed(context, 'editProfile');
                     }
                   },
                   iconColor: UiColors.warning,
                   title: "Editar Perfil",
-                  isSelected: currentPage == "Profile" ? true : false),
+                  isSelected: currentPage == "EditProfile" ? true : false),
 
             ],
           ),

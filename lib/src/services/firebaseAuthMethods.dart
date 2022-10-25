@@ -37,7 +37,7 @@ class FirebaseAuthMethods {
     required String name,
     required String lastname,
     required String phone,
-    required XFile imageUrl,
+    required List<XFile>? imageUrl,
     required String email,
     required String password,
     required BuildContext context,
@@ -47,27 +47,36 @@ class FirebaseAuthMethods {
         email: email,
         password: password,
       );
-      await saveFirestoreProfile(
-          context, name, lastname, phone, imageUrl, email);
+      await saveFirestoreProfile(context, name, lastname, phone, imageUrl, email);
+      Navigator.pushNamed(context, 'home');
     } on FirebaseAuthException catch (e) {
       // if you want to display your own custom error message
       if (e.code == 'weak-password') {
-        Alert.alertAuth(
-            context, "La contraseña proporcionada es demasiado débil.");
+        Alert.alertAuth(context, "La contraseña proporcionada es demasiado débil.");
       } else if (e.code == 'email-already-in-use') {
         Alert.alertAuth(context, "Este email ya se encuentra en uso.");
       } else if (e.code == 'unknown') {
         Alert.alertAuth(context, "Alguno de los campos esta vacio.");
       }
-      if (e.code != 'weak-password' &&
-          e.code != 'email-already-in-use' &&
-          e.code != 'unknown') {
+      if (e.code != 'weak-password' && e.code != 'email-already-in-use' && e.code != 'unknown') {
         print(e.code);
         Alert.alertAuth(context, e.message);
         // showSnackBar(context, e.message!);
       }
     }
   }
+
+  Future<void> editProfile({
+    required String name,
+    required String lastname,
+    required String phone,
+    required List<XFile>? imageUrl,
+    required BuildContext context,
+  }) async {
+    await editFirestoreProfile(context, name, lastname, phone, imageUrl);
+    Alert.alertSucess(context, 'Datos guardados con exito');
+  }
+
   String imageurl = "";
   // Login con email y contraseña
   Future<void> loginWithEmail({
@@ -92,17 +101,13 @@ class FirebaseAuthMethods {
       if (e.code == 'unknown') {
         Alert.alertAuth(context, "Alguno de los campos esta vacio.");
       } else if (e.code == 'user-not-found') {
-        Alert.alertAuth(
-            context, 'Este usuario no se encuentra en nuestro sistema.');
+        Alert.alertAuth(context, 'Este usuario no se encuentra en nuestro sistema.');
       } else if (e.code == 'invalid-email') {
         Alert.alertAuth(context, 'El E-mail es invalido.');
       } else if (e.code == 'wrong-password') {
         Alert.alertAuth(context, 'La contraseña es invalida.');
       }
-      if (e.code != 'unknown' &&
-          e.code != 'user-not-found' &&
-          e.code != 'invalid-email' &&
-          e.code != 'wrong-password') {
+      if (e.code != 'unknown' && e.code != 'user-not-found' && e.code != 'invalid-email' && e.code != 'wrong-password') {
         print(e.code);
         Alert.alertAuth(context, e.message);
         // showSnackBar(context, e.message!);
@@ -120,22 +125,64 @@ class FirebaseAuthMethods {
     }
   }
 
-  //Crear perfil en Base de datos
+  //Editar Perfil en base de datos
 
-  Future<void> saveFirestoreProfile(BuildContext context, String name,
-      String lastname, String phone, XFile imageUrl, String email) async {
+  Future<void> editFirestoreProfile(BuildContext context, String name, String lastname, String phone, List<XFile>? imageUrl) async {
     final userAuth = FirebaseAuth.instance.currentUser;
     final userID = userAuth?.uid;
-    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
     final DocumentSnapshot doc = await usersRef.doc(userAuth?.uid).get();
+    String? imageurl;
+    print("Imagen seleccionada: ${imageUrl?[0].name}");
     //Instancia FireStorange
-    Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference referenceDirImages = referenceRoot.child('/users/$userID');
-    Reference referenceImagenToUpload = referenceDirImages.child(uniqueFileName);
-    //subir imagen a firestorange
-    if (imageUrl != null) {
+    if (imageUrl?[0].name != null) {
+      String? nameImage = imageUrl?[0].name;
+      Reference referenceRoot = FirebaseStorage.instance.ref();
+      Reference referenceDirImages = referenceRoot.child('/users/$userID');
+      Reference referenceImagenToUpload = referenceDirImages.child(nameImage!);
+      //subir imagen a firestorange
       try {
-        await referenceImagenToUpload.putFile(File(imageUrl!.path));
+        await referenceImagenToUpload.putFile(File(imageUrl![0].path));
+        imageurl = await referenceImagenToUpload.getDownloadURL();
+      } on FirebaseException catch (e) {
+        print(e.message);
+      }
+    }
+    if (imageurl != null) {
+      usersRef.doc(userAuth?.uid).update({
+        'id': userAuth?.uid,
+        'name': name,
+        'lastname': lastname,
+        'phone': phone,
+        'photoUrl': imageurl,
+        'timestamp': timestamp,
+      });
+    } else {
+      usersRef.doc(userAuth?.uid).update({
+        'id': userAuth?.uid,
+        'name': name,
+        'lastname': lastname,
+        'phone': phone,
+        'timestamp': timestamp,
+      });
+    }
+  }
+
+  //Crear perfil en Base de datos
+
+  Future<void> saveFirestoreProfile(BuildContext context, String name, String lastname, String phone, List<XFile>? imageUrl, String email) async {
+    final userAuth = FirebaseAuth.instance.currentUser;
+    final userID = userAuth?.uid;
+    final DocumentSnapshot doc = await usersRef.doc(userAuth?.uid).get();
+    String? imageurl;
+    if (imageUrl?[0].name != null) {
+      String? nameImage = imageUrl?[0].name;
+      //Instancia FireStorange
+      Reference referenceRoot = FirebaseStorage.instance.ref();
+      Reference referenceDirImages = referenceRoot.child('/users/$userID');
+      Reference referenceImagenToUpload = referenceDirImages.child(nameImage!);
+      //subir imagen a firestorange
+      try {
+        await referenceImagenToUpload.putFile(File(imageUrl![0].path));
         imageurl = await referenceImagenToUpload.getDownloadURL();
       } on FirebaseException catch (e) {
         print(e.message);
@@ -160,15 +207,13 @@ class FirebaseAuthMethods {
       if (kIsWeb) {
         GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
-        googleProvider
-            .addScope('https://www.googleapis.com/auth/contacts.readonly');
+        googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
         await _auth.signInWithPopup(googleProvider);
       } else {
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-        final GoogleSignInAuthentication? googleAuth =
-            await googleUser?.authentication;
+        final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
         if (googleAuth?.accessToken != null && googleAuth?.idToken != null) {
           // Create a new credential
@@ -176,8 +221,7 @@ class FirebaseAuthMethods {
             accessToken: googleAuth?.accessToken,
             idToken: googleAuth?.idToken,
           );
-          UserCredential userCredential =
-              await _auth.signInWithCredential(credential);
+          UserCredential userCredential = await _auth.signInWithCredential(credential);
 
           // si desea realizar una tarea específica, como almacenar información en firestore
           // solo para nuevos usuarios que usen el inicio de sesión de Google (ya que no hay dos opciones

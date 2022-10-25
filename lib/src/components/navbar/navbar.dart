@@ -49,6 +49,7 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
 class _NavbarState extends State<Navbar> {
   ItemScrollController _scrollController = ItemScrollController();
 
+  @override
   void initState() {
     super.initState();
   }
@@ -69,7 +70,7 @@ class _NavbarState extends State<Navbar> {
                       : Colors.transparent,
                   spreadRadius: -10,
                   blurRadius: 12,
-                  offset: Offset(0, 5))
+                  offset: const Offset(0, 5))
             ]),
         child: SafeArea(
           child: Padding(
@@ -102,8 +103,7 @@ class _NavbarState extends State<Navbar> {
                                 Navigator.pop(context);
                               }
                             }),
-                        Container(
-                            padding: const EdgeInsets.only(left: 90, right: 0),
+                        Center(
                             child: Text(widget.title,
                                 style: GoogleFonts.pacifico(
                                     textStyle:

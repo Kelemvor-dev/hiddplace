@@ -30,6 +30,7 @@ class RoundedInput extends StatelessWidget {
       child: TextField(
           controller: controller,
           cursorColor: color,
+
           keyboardType:
               isEmail ? TextInputType.emailAddress : TextInputType.text,
           decoration: InputDecoration(

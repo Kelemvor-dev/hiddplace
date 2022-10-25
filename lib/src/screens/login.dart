@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +19,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   List<XFile>? _imageFile;
+
   //Controladores para enviar informacion
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -27,13 +27,12 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   final TextEditingController lastnameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
 
-
   void signUpUser() async {
     context.read<FirebaseAuthMethods>().signUpWithEmail(
           name: nameController.text,
           lastname: lastnameController.text,
           phone: phoneController.text,
-          imageUrl: _imageFile![0],
+          imageUrl: _imageFile,
           email: emailController.text,
           password: passwordController.text,
           context: context,
@@ -58,8 +57,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
-    animationController =
-        AnimationController(vsync: this, duration: animationDuration);
+    animationController = AnimationController(vsync: this, duration: animationDuration);
   }
 
   @override
@@ -73,6 +71,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   void _setImageFileListFromFile(XFile? value) {
     _imageFile = value == null ? null : <XFile>[value];
   }
+
   final ImagePickerPlatform _picker = ImagePickerPlatform.instance;
 
   @override
@@ -83,10 +82,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     double defaultLoginSize = size.height - (size.height * 0.2);
     double defaultRegisterSize = size.height - (size.height * 0.1);
 
-    containerSize = Tween<double>(
-            begin: size.height * 0.1, end: defaultRegisterSize)
-        .animate(
-            CurvedAnimation(parent: animationController, curve: Curves.linear));
+    containerSize =
+        Tween<double>(begin: size.height * 0.1, end: defaultRegisterSize).animate(CurvedAnimation(parent: animationController, curve: Curves.linear));
 
     return Scaffold(
       body: Stack(
@@ -97,9 +94,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               child: Container(
                 width: size.width,
                 height: 450,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: kSecundaryColor),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: kSecundaryColor),
               )),
           // Formulario de Iniciar sesión
           AnimatedOpacity(
@@ -130,16 +125,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       ),
                       const SizedBox(height: 140),
                       RoundedInput(
-                          controller: emailController,
-                          bgcolor: kPrimaryColor,
-                          color: kPrimaryColor,
-                          hint: "E-mail",
-                          icon: Icons.mail,
-                          isEmail: true),
-                      RoundedPasswordInput(
-                          controller: passwordController,
-                          hint: "Contraseña",
-                          bgColor: kPrimaryColor),
+                          controller: emailController, bgcolor: kPrimaryColor, color: kPrimaryColor, hint: "E-mail", icon: Icons.mail, isEmail: true),
+                      RoundedPasswordInput(controller: passwordController, hint: "Contraseña", bgColor: kPrimaryColor),
                       InkWell(
                         onTap: () {
                           loginUser();
@@ -147,9 +134,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
                           width: size.width * 0.4,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: kPrimaryColor),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: kPrimaryColor),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           alignment: Alignment.center,
                           child: const Text(
@@ -194,7 +179,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   child: SizedBox(
                     width: size.width,
                     height: defaultLoginSize,
-                    child: Column(
+                    child: SingleChildScrollView(
+                        child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -214,8 +200,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                               width: size.width * 0.3,
                               height: size.width * 0.3,
                               clipBehavior: Clip.antiAlias,
-                              decoration:
-                                  const BoxDecoration(shape: BoxShape.circle),
+                              decoration: const BoxDecoration(shape: BoxShape.circle),
                               child: _imageFile == null
                                   ? Image.asset(
                                       'assets/images/profile.jpeg',
@@ -224,15 +209,13 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                   : Image.file(File(_imageFile![0].path)),
                             ),
                             Positioned(
-                              width: 150,
-                              height: 150,
-                              bottom: -45.0,
-                              right: -45.0,
+                              width: 100,
+                              height: 100,
+                              bottom: 10.0,
+                              right: 10.0,
                               child: InkWell(
                                 onTap: () {
-                                  showModalBottomSheet(
-                                      context: context,
-                                      builder: ((builder) => bottomSheet()));
+                                  showModalBottomSheet(context: context, builder: ((builder) => bottomSheet()));
                                 },
                                 child: const Icon(
                                   Icons.camera_alt,
@@ -278,10 +261,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             hint: "E-mail",
                             icon: Icons.mail,
                             isEmail: true),
-                        RoundedPasswordInput(
-                            controller: passwordController,
-                            hint: "Contraseña",
-                            bgColor: kPrimaryColor),
+                        RoundedPasswordInput(controller: passwordController, hint: "Contraseña", bgColor: kPrimaryColor),
                         InkWell(
                           onTap: () {
                             signUpUser();
@@ -289,9 +269,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
                             width: size.width * 0.4,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: kPrimaryColor),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: kPrimaryColor),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             alignment: Alignment.center,
                             child: const Text(
@@ -304,7 +282,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           ),
                         ),
                       ],
-                    ),
+                    )),
                   ),
                 ),
               ),
