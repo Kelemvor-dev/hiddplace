@@ -7,6 +7,8 @@ import 'package:hiddplace/src/components/navbar/drawer.dart';
 import 'package:hiddplace/src/components/navbar/navbar.dart';
 import 'package:hiddplace/src/components/rounded_input.dart';
 import 'package:hiddplace/src/components/rounded_textarea.dart';
+import 'package:provider/provider.dart';
+import 'package:hiddplace/src/services/publications.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 
@@ -17,7 +19,7 @@ class CreatePublicationScreen extends StatefulWidget {
   State<CreatePublicationScreen> createState() => _CreatePublicationState();
 }
 
-class _CreatePublicationState extends State<CreatePublicationScreen> {
+class _CreatePublicationState extends State<CreatePublicationScreen> with SingleTickerProviderStateMixin {
   //Controladores para enviar informacion
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
@@ -31,6 +33,15 @@ class _CreatePublicationState extends State<CreatePublicationScreen> {
       imageFileList!.addAll(selectedImages);
     }
     setState(() {});
+  }
+
+  void savePublication() async {
+    context.read<Publications>().savePublication(
+          title: titleController.text,
+          content: contentController.text,
+          listImages: imageFileList,
+          context: context,
+        );
   }
 
   @override
@@ -73,7 +84,7 @@ class _CreatePublicationState extends State<CreatePublicationScreen> {
                 )),
             child: Scaffold(
               body: Padding(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(9),
                 child: GridView.builder(
                     physics: const ScrollPhysics(),
                     itemCount: imageFileList!.length,
@@ -81,10 +92,19 @@ class _CreatePublicationState extends State<CreatePublicationScreen> {
                       crossAxisCount: 3,
                     ),
                     itemBuilder: (BuildContext context, int index) {
-                      return Image.file(
-                        File(imageFileList![index].path),
-                        fit: BoxFit.cover,
-                      );
+                      return GestureDetector(
+                          onTap: () => {
+                                setState(() {
+                                  imageFileList!.removeAt(index);
+                                })
+                              },
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Image.file(
+                              File(imageFileList![index].path),
+                              fit: BoxFit.cover,
+                            ),
+                          ));
                     }),
               ),
               floatingActionButton: SizedBox(
@@ -95,7 +115,7 @@ class _CreatePublicationState extends State<CreatePublicationScreen> {
                       showModalBottomSheet(context: context, builder: ((builder) => bottomSheet()));
                     },
                     child: const FaIcon(
-                      color:UiColors.white,
+                      color: UiColors.white,
                       FontAwesomeIcons.circlePlus,
                       size: 30,
                     ),
@@ -104,7 +124,9 @@ class _CreatePublicationState extends State<CreatePublicationScreen> {
           ),
           const SizedBox(height: 20),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              savePublication();
+            },
             borderRadius: BorderRadius.circular(30),
             child: Container(
               width: size.width * 0.4,
@@ -127,14 +149,14 @@ class _CreatePublicationState extends State<CreatePublicationScreen> {
 
   Widget bottomSheet() {
     return Container(
-      height: 100.0,
+      height: 110.0,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(color: kSecundaryColor),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            "Seleccione su foto de perfil",
+            "Seleccione las fotos de la publicación",
             style: TextStyle(fontSize: 20.0, color: kPrimaryColor),
           ),
           const SizedBox(

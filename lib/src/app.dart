@@ -8,6 +8,7 @@ import 'package:hiddplace/src/screens/login.dart';
 import 'package:hiddplace/src/screens/publications/createPublicationScreen.dart';
 import 'package:hiddplace/src/screens/users/editProfile.dart';
 import 'package:hiddplace/src/services/firebaseAuthMethods.dart';
+import 'package:hiddplace/src/services/publications.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
@@ -19,6 +20,9 @@ class App extends StatelessWidget {
       providers: [
         Provider<FirebaseAuthMethods>(
           create: (_) => FirebaseAuthMethods(FirebaseAuth.instance),
+        ),
+        Provider<Publications>(
+          create: (_) => Publications(),
         ),
         StreamProvider(
           create: (context) => context.read<FirebaseAuthMethods>().authState,
