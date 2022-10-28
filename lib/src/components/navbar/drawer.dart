@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiddplace/constants.dart';
@@ -59,7 +60,7 @@ class NowDrawer extends StatelessWidget {
                   icon: FontAwesomeIcons.house,
                   onTap: () {
                     if (currentPage != "Home") {
-                      Navigator.pushNamed(context, 'home');
+                      Navigator.pushNamedAndRemoveUntil(context,'home', (Route<dynamic> route) => false);
                     }
                   },
                   iconColor: UiColors.white,
@@ -99,7 +100,7 @@ class NowDrawer extends StatelessWidget {
                       icon: FontAwesomeIcons.powerOff,
                       onTap: () {
                         auth.signOut();
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Login()));
+                        SystemNavigator.pop();
                       },
                       iconColor: UiColors.muted,
                       title: "Cerrar sesión",

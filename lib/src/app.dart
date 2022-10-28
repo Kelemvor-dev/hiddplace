@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hiddplace/constants.dart';
+import 'package:hiddplace/src/models/publications.dart';
+import 'package:hiddplace/src/models/publicationsUser.dart';
 import 'package:hiddplace/src/providers/profile.dart';
 import 'package:hiddplace/src/screens/home.dart';
 import 'package:hiddplace/src/screens/login.dart';
@@ -28,10 +29,17 @@ class App extends StatelessWidget {
           create: (context) => context.read<FirebaseAuthMethods>().authState,
           initialData: null,
         ),
-          ChangeNotifierProvider(
-            create: (_) => ProfileData(),
-
-        )
+        ChangeNotifierProvider(
+          create: (_) => ProfileData(),
+        ),
+        StreamProvider<List<Publication>>(
+          create: (_) => Publications().getPublications(),
+          initialData: const [],
+        ),
+        StreamProvider<List<PublicationUser>>(
+          create: (_) => Publications().getPublicationsByUserID(),
+           initialData: const [],
+         ),
       ],
       child: MaterialApp(
         title: 'Hiddplace',

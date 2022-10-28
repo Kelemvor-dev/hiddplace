@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:hiddplace/src/components/navbar/drawer.dart';
 import 'package:hiddplace/src/components/navbar/navbar.dart';
 import 'package:hiddplace/src/components/rounded_input.dart';
 import 'package:hiddplace/src/components/rounded_textarea.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:hiddplace/src/services/publications.dart';
 import 'package:image_picker/image_picker.dart';
@@ -125,6 +127,31 @@ class _CreatePublicationState extends State<CreatePublicationScreen> with Single
           const SizedBox(height: 20),
           InkWell(
             onTap: () {
+              showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled:true,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height,
+                    color: kPrimaryColor,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            'Cargando...',
+                            style: GoogleFonts.montserrat(
+                                textStyle: Theme.of(context).textTheme.headline4, fontSize: 40, fontWeight: FontWeight.w400, color: UiColors.white),
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(width: 200, child: Lottie.asset('assets/hiddplace_animated.json')),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
               savePublication();
             },
             borderRadius: BorderRadius.circular(30),
