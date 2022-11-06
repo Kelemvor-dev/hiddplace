@@ -1,16 +1,14 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiddplace/constants.dart';
-import 'package:hiddplace/src/components/navbar/drawer.dart';
-import 'package:hiddplace/src/components/navbar/navbar.dart';
-import 'package:hiddplace/src/components/rounded_input.dart';
-import 'package:hiddplace/src/components/rounded_textarea.dart';
+import 'package:hiddplace/src/controllers/publicationController.dart';
+import 'package:hiddplace/src/views/components/navbar/drawer.dart';
+import 'package:hiddplace/src/views/components/navbar/navbar.dart';
+import 'package:hiddplace/src/views/components/rounded_input.dart';
+import 'package:hiddplace/src/views/components/rounded_textarea.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
-import 'package:hiddplace/src/services/publications.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 
@@ -23,28 +21,8 @@ class CreatePublicationScreen extends StatefulWidget {
 
 class _CreatePublicationState extends State<CreatePublicationScreen> with SingleTickerProviderStateMixin {
   //Controladores para enviar informacion
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController contentController = TextEditingController();
-
-  //image piker
-  final ImagePicker imagePicker = ImagePicker();
-  List<XFile>? imageFileList = [];
-  void selectImages() async {
-    final List<XFile> selectedImages = await imagePicker.pickMultiImage();
-    if (selectedImages!.isNotEmpty) {
-      imageFileList!.addAll(selectedImages);
-    }
-    setState(() {});
-  }
-
-  void savePublication() async {
-    context.read<Publications>().savePublication(
-          title: titleController.text,
-          content: contentController.text,
-          listImages: imageFileList,
-          context: context,
-        );
-  }
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +37,16 @@ class _CreatePublicationState extends State<CreatePublicationScreen> with Single
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RoundedInput(
-              controller: titleController, bgcolor: kRegisterBgColor, color: kPrimaryColor, hint: "Titulo", icon: Icons.info_outline, isEmail: false),
+            controller: _titleController,
+            bgcolor: kRegisterBgColor,
+            color: kPrimaryColor,
+            hint: "Titulo",
+            icon: Icons.info_outline,
+            isEmail: false,
+            maxLe: 30,
+          ),
           RoundedTextarea(
-            controller: contentController,
+            controller: _contentController,
             bgcolor: kRegisterBgColor,
             color: kPrimaryColor,
             hint: "Descripción",
@@ -89,7 +74,7 @@ class _CreatePublicationState extends State<CreatePublicationScreen> with Single
                 padding: const EdgeInsets.all(9),
                 child: GridView.builder(
                     physics: const ScrollPhysics(),
-                    itemCount: imageFileList!.length,
+                    itemCount: _imageFileList!.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                     ),
@@ -97,13 +82,13 @@ class _CreatePublicationState extends State<CreatePublicationScreen> with Single
                       return GestureDetector(
                           onTap: () => {
                                 setState(() {
-                                  imageFileList!.removeAt(index);
+                                  _imageFileList!.removeAt(index);
                                 })
                               },
                           child: Padding(
                             padding: const EdgeInsets.all(5),
                             child: Image.file(
-                              File(imageFileList![index].path),
+                              File(_imageFileList![index].path),
                               fit: BoxFit.cover,
                             ),
                           ));
@@ -129,7 +114,7 @@ class _CreatePublicationState extends State<CreatePublicationScreen> with Single
             onTap: () {
               showModalBottomSheet<void>(
                 context: context,
-                isScrollControlled:true,
+                isScrollControlled: true,
                 builder: (BuildContext context) {
                   return Container(
                     height: MediaQuery.of(context).size.height,
@@ -152,7 +137,7 @@ class _CreatePublicationState extends State<CreatePublicationScreen> with Single
                   );
                 },
               );
-              savePublication();
+              PublicationController.savePublication(context,_titleController,_contentController,_imageFileList);
             },
             borderRadius: BorderRadius.circular(30),
             child: Container(
@@ -237,5 +222,16 @@ class _CreatePublicationState extends State<CreatePublicationScreen> with Single
         ],
       ),
     );
+  }
+  //image piker
+  final ImagePicker imagePicker = ImagePicker();
+  List<XFile>? _imageFileList = [];
+
+  void selectImages() async {
+    final List<XFile> selectedImages = await imagePicker.pickMultiImage();
+    if (selectedImages!.isNotEmpty) {
+      _imageFileList!.addAll(selectedImages);
+    }
+    setState(() {});
   }
 }

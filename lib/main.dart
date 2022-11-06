@@ -44,22 +44,13 @@ class SplashScreen extends StatelessWidget {
     return AnimatedSplashScreen(
       splash: Column(
         children: [
-          Container(
-            // padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-            child: Text(
-              'Hiddplace',
-              style: GoogleFonts.montserrat(
-                  textStyle: Theme.of(context).textTheme.headline4,
-                  fontSize: 40,
-                  fontWeight: FontWeight.w400,
-                  color: UiColors.white),
-            ),
+          Text(
+            'Hiddplace',
+            style: GoogleFonts.montserrat(
+                textStyle: Theme.of(context).textTheme.headline4, fontSize: 40, fontWeight: FontWeight.w400, color: UiColors.white),
           ),
           const SizedBox(height: 20),
-          Container(
-            width: 200,
-              child:Lottie.asset('assets/hiddplace_animated.json')
-          ),
+          SizedBox(width: 200, child: Lottie.asset('assets/hiddplace_animated.json')),
           // se puede usar imagenes
         ],
       ),

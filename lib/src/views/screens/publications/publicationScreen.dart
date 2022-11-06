@@ -1,57 +1,35 @@
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiddplace/constants.dart';
+import 'package:hiddplace/src/views/widgets/comments.dart';
 import 'package:provider/provider.dart';
-import 'package:hiddplace/src/models/publications.dart';
-import 'package:hiddplace/src/components/carusel.dart';
+import 'package:hiddplace/src/models/entity/publications.dart';
+import 'package:hiddplace/src/views/components/carusel.dart';
 
-class PublicationScreen extends StatelessWidget {
+import '../../../controllers/publicationController.dart';
+import '../../../models/services/publications.dart';
+
+class PublicationScreen extends StatefulWidget {
   const PublicationScreen({super.key});
 
-  Widget _buildComment(int index) {
-    return Padding(
-      padding: EdgeInsets.all(10.0),
-      child: ListTile(
-        leading: Container(
-          width: 50.0,
-          height: 50.0,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black45,
-                offset: Offset(0, 2),
-                blurRadius: 6.0,
-              ),
-            ],
-          ),
-          child: const CircleAvatar(
-            child: ClipOval(
-              child: Image(
-                height: 50.0,
-                width: 50.0,
-                image: AssetImage('assets/images/profile.jpeg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ),
-        title: const Text(
-          'jeyson garcia',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        subtitle: const Text('hola mundo'),
-        trailing: IconButton(
-          icon: const Icon(
-            Icons.favorite_border,
-          ),
-          color: Colors.grey,
-          onPressed: () => print('Like comment'),
-        ),
-      ),
+  @override
+  State<PublicationScreen> createState() => _PublicationScreenState();
+}
+
+class _PublicationScreenState extends State<PublicationScreen> with SingleTickerProviderStateMixin {
+  final userAuth = FirebaseAuth.instance.currentUser;
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+
+  _buildComment(String? publicationID) {
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return Comments(publicationID: publicationID,);
+        }
     );
   }
 
@@ -60,14 +38,14 @@ class PublicationScreen extends StatelessWidget {
     final publications = Provider.of<List<Publication>>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: Colors.transparent,
         onPressed: () {
           Navigator.pushNamed(context, 'createPublication');
         },
         child: const FaIcon(
-          color: UiColors.white,
+          color: kPrimaryColor,
           FontAwesomeIcons.circlePlus,
-          size: 35,
+          size: 45,
         ),
       ),
       body: (publications != null)
@@ -89,6 +67,7 @@ class PublicationScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -132,22 +111,25 @@ class PublicationScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                Text(
-                                  '${publications[index].title}',
-                                  style: GoogleFonts.montserrat(
-                                      textStyle: Theme.of(context).textTheme.headline4,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                      color: kPrimaryColor),
-                                ),
                                 Padding(
                                     padding: const EdgeInsets.only(left: 25, right: 25, top: 5),
                                     child: Text(
-                                      '${publications[index].content}',
-                                      textAlign: TextAlign.justify,
+                                      '${publications[index].title}',
                                       style: GoogleFonts.montserrat(
                                           textStyle: Theme.of(context).textTheme.headline4,
-                                          fontSize: 16,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w400,
+                                          fontStyle: FontStyle.italic,
+                                          color: kPrimaryColor),
+                                    )),
+                                Padding(
+                                    padding: const EdgeInsets.only(left: 28, right: 28, top: 10),
+                                    child: Text(
+                                      '${publications[index].content}',
+                                      textAlign: TextAlign.left,
+                                      style: GoogleFonts.montserrat(
+                                          textStyle: Theme.of(context).textTheme.headline4,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w400,
                                           color: kPrimaryColor),
                                     )),
@@ -159,7 +141,7 @@ class PublicationScreen extends StatelessWidget {
                                       height: 320.0,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(80.0),
-                                        boxShadow:  [
+                                        boxShadow: [
                                           BoxShadow(
                                             color: kPrimaryColor.withAlpha(80),
                                             offset: const Offset(0, 0),
@@ -179,14 +161,26 @@ class PublicationScreen extends StatelessWidget {
                                         children: <Widget>[
                                           Row(
                                             children: <Widget>[
-                                              IconButton(
-                                                icon: const Icon(FontAwesomeIcons.thumbsUp),
-                                                iconSize: 30.0,
-                                                onPressed: () => print('Like post'),
-                                              ),
-                                              const Text(
-                                                '2,515',
-                                                style: TextStyle(
+                                              //Logica Boton Like
+                                              if (publications[index].likes!.contains(userId)) ...[
+                                                IconButton(
+                                                  icon: const Icon(
+                                                    FontAwesomeIcons.solidThumbsUp,
+                                                    color: UiColors.like,
+                                                  ),
+                                                  iconSize: 30.0,
+                                                  onPressed: () => PublicationController.unlikePublication(publications[index].id, publications[index].likes, userId,context),
+                                                ),
+                                              ] else ...[
+                                                IconButton(
+                                                  icon: const Icon(FontAwesomeIcons.thumbsUp),
+                                                  iconSize: 30.0,
+                                                  onPressed: () => PublicationController.likePublication(publications[index].id, publications[index].likes, userId,context),
+                                                ),
+                                              ],
+                                              Text(
+                                                (publications[index].likes != null) ? '${publications[index].likes?.length}' : '0',
+                                                style: const TextStyle(
                                                   fontSize: 14.0,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -200,15 +194,8 @@ class PublicationScreen extends StatelessWidget {
                                                 icon: const Icon(FontAwesomeIcons.comment),
                                                 iconSize: 30.0,
                                                 onPressed: () {
-                                                  print('Chat');
+                                                  _buildComment(publications[index].id);
                                                 },
-                                              ),
-                                              const Text(
-                                                '350',
-                                                style: TextStyle(
-                                                  fontSize: 14.0,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
                                               ),
                                             ],
                                           ),

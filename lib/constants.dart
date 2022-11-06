@@ -10,6 +10,8 @@ class UiColors {
 
   static const Color Kmuted = Color.fromRGBO(136, 152, 170, 1.0);
 
+  static const Color like = Color.fromRGBO(255, 0, 0, 1.0);
+
   static const Color black = Color(0xFF000000);
 
   static const Color white = Color(0xFFFFFFFF);

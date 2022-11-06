@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:hiddplace/constants.dart';
-import 'package:hiddplace/src/components/navbar/drawer.dart';
-import 'package:hiddplace/src/components/navbar/navbar.dart';
-import 'package:hiddplace/src/providers/profile.dart';
-import 'package:hiddplace/src/screens/chat/chatScreen.dart';
-import 'package:hiddplace/src/screens/publications/publicationScreen.dart';
-import 'package:hiddplace/src/screens/users/profileScreen.dart';
+import 'package:hiddplace/src/views/components/navbar/drawer.dart';
+import 'package:hiddplace/src/views/components/navbar/navbar.dart';
+import 'package:hiddplace/src/models/providers/profile.dart';
+import 'package:hiddplace/src/views/screens/chat/chatScreen.dart';
+import 'package:hiddplace/src/views/screens/publications/publicationScreen.dart';
+import 'package:hiddplace/src/views/screens/users/profileScreen.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {

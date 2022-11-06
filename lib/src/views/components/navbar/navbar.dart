@@ -3,11 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hiddplace/constants.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-// import 'package:now_ui_flutter/screens/trending.dart';
-// import 'package:now_ui_flutter/screens/fashion.dart';
-// import 'package:now_ui_flutter/screens/notifications.dart';
-// import 'package:now_ui_flutter/screens/search.dart';
-// import 'package:now_ui_flutter/screens/cart.dart';
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final String categoryOne;

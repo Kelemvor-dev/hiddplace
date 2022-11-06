@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiddplace/constants.dart';
-import 'package:hiddplace/src/components/navbar/drawer-tile.dart';
-import 'package:hiddplace/src/screens/login.dart';
+import 'package:hiddplace/src/views/components/navbar/drawer-tile.dart';
+import 'package:hiddplace/src/views/screens/login.dart';
 
 class NowDrawer extends StatelessWidget {
   final String currentPage;

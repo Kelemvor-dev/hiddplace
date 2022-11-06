@@ -3,11 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hiddplace/src/components/rounded_password_input.dart';
-import 'package:provider/provider.dart';
-import '../../constants.dart';
-import '../components/rounded_input.dart';
-import '../services/firebaseAuthMethods.dart';
+import 'package:hiddplace/src/controllers/userController.dart';
+import 'package:hiddplace/src/views/components/rounded_password_input.dart';
+import '../../../constants.dart';
+import '../../views/components/rounded_input.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 
 class Login extends StatefulWidget {
@@ -21,31 +20,13 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   List<XFile>? _imageFile;
 
   //Controladores para enviar informacion
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController lastnameController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
-  void signUpUser() async {
-    context.read<FirebaseAuthMethods>().signUpWithEmail(
-          name: nameController.text,
-          lastname: lastnameController.text,
-          phone: phoneController.text,
-          imageUrl: _imageFile,
-          email: emailController.text,
-          password: passwordController.text,
-          context: context,
-        );
-  }
 
-  void loginUser() {
-    context.read<FirebaseAuthMethods>().loginWithEmail(
-          email: emailController.text,
-          password: passwordController.text,
-          context: context,
-        );
-  }
 
   bool isLogin = true;
   late Animation<double> containerSize;
@@ -65,14 +46,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     animationController.dispose();
     super.dispose();
   }
-
-  //image piker
-
-  void _setImageFileListFromFile(XFile? value) {
-    _imageFile = value == null ? null : <XFile>[value];
-  }
-
-  final ImagePickerPlatform _picker = ImagePickerPlatform.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -122,14 +95,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       ),
                       const SizedBox(height: 110),
                       RoundedInput(
-                          controller: emailController,
+                          controller: _emailController,
                           bgcolor: kRegisterBgColor,
                           color: kPrimaryColor,
                           hint: "E-mail",
                           icon: Icons.mail,
                           isEmail: true),
                       RoundedPasswordInput(
-                        controller: passwordController,
+                        controller: _passwordController,
                         hint: "Contraseña",
                         bgColor: kRegisterBgColor,
                         color: kPrimaryColor,
@@ -137,7 +110,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       const SizedBox(height: 10),
                       InkWell(
                         onTap: () {
-                          loginUser();
+                          UserController.loginUser(context,_emailController,_passwordController);
                         },
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
@@ -196,10 +169,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         Text(
                           'Registro',
                           style: GoogleFonts.montserrat(
-                              textStyle: Theme.of(context).textTheme.headline4,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w400,
-                              color: kPrimaryColor),
+                              textStyle: Theme.of(context).textTheme.headline4, fontSize: 24, fontWeight: FontWeight.w400, color: kPrimaryColor),
                         ),
                         const SizedBox(height: 10),
                         Stack(
@@ -235,35 +205,35 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           ],
                         ),
                         RoundedInput(
-                            controller: nameController,
+                            controller: _nameController,
                             bgcolor: kPrimaryColor,
                             color: UiColors.white,
                             hint: "Nombres",
                             icon: Icons.info_outline,
                             isEmail: false),
                         RoundedInput(
-                            controller: lastnameController,
+                            controller: _lastnameController,
                             bgcolor: kPrimaryColor,
                             color: UiColors.white,
                             hint: "Apellidos",
                             icon: Icons.info_outline,
                             isEmail: false),
                         RoundedInput(
-                            controller: phoneController,
+                            controller: _phoneController,
                             bgcolor: kPrimaryColor,
                             color: UiColors.white,
                             hint: "Telefono",
                             icon: Icons.info_outline,
                             isEmail: false),
                         RoundedInput(
-                            controller: emailController,
+                            controller: _emailController,
                             bgcolor: kPrimaryColor,
                             color: UiColors.white,
                             hint: "E-mail",
                             icon: Icons.mail,
                             isEmail: true),
                         RoundedPasswordInput(
-                          controller: passwordController,
+                          controller: _passwordController,
                           hint: "Contraseña",
                           bgColor: kPrimaryColor,
                           color: UiColors.white,
@@ -271,7 +241,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         const SizedBox(height: 10),
                         InkWell(
                           onTap: () {
-                            signUpUser();
+                            UserController.signUpUser(context, _nameController,_lastnameController,_phoneController,_imageFile,_emailController,_passwordController);
                           },
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
@@ -438,6 +408,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       ),
     );
   }
+
+  //image piker
+
+  void _setImageFileListFromFile(XFile? value) {
+    _imageFile = value == null ? null : <XFile>[value];
+  }
+
+  final ImagePickerPlatform _picker = ImagePickerPlatform.instance;
 
   void takePhoto(ImageSource source) async {
     try {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
-import 'input_container.dart';
+import '../../../constants.dart';
+import '../../views/components/input_container.dart';
 
 class RoundedPasswordInput extends StatelessWidget {
   final String hint;

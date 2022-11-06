@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hiddplace/constants.dart';
-import 'package:hiddplace/src/components/navbar/drawer.dart';
-import 'package:hiddplace/src/components/navbar/navbar.dart';
-import 'package:hiddplace/src/components/rounded_input.dart';
-import 'package:hiddplace/src/providers/profile.dart';
-import 'package:hiddplace/src/services/firebaseAuthMethods.dart';
+import 'package:hiddplace/src/controllers/userController.dart';
+import 'package:hiddplace/src/views/components/navbar/drawer.dart';
+import 'package:hiddplace/src/views/components/navbar/navbar.dart';
+import 'package:hiddplace/src/views/components/rounded_input.dart';
+import 'package:hiddplace/src/models/providers/profile.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:provider/provider.dart';
 
@@ -20,38 +20,20 @@ class _EditProfileState extends State<EditProfileScreen> {
   List<XFile>? _imageFile;
 
   //Controladores para enviar informacion
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController lastnameController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     //Llamamos la informacion del perfil en la base de datos(Firestore) con Provider
     Provider.of<ProfileData>(context, listen: false).getProfile();
-    nameController.text = Provider.of<ProfileData>(context, listen: false).name;
-    lastnameController.text = Provider.of<ProfileData>(context, listen: false).lastname;
-    phoneController.text = Provider.of<ProfileData>(context, listen: false).phone;
+    _nameController.text = Provider.of<ProfileData>(context, listen: false).name;
+    _lastnameController.text = Provider.of<ProfileData>(context, listen: false).lastname;
+    _phoneController.text = Provider.of<ProfileData>(context, listen: false).phone;
 
   }
-
-
-  void editUser() async {
-    context.read<FirebaseAuthMethods>().editProfile(
-          name: nameController.text,
-          lastname: lastnameController.text,
-          phone: phoneController.text,
-          imageUrl: _imageFile,
-          context: context,
-        );
-  }
-
-  //image piker
-  void _setImageFileListFromFile(XFile? value) {
-    _imageFile = (value == null ? null : <XFile>[value])!;
-  }
-
-  final ImagePickerPlatform _picker = ImagePickerPlatform.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -102,21 +84,21 @@ class _EditProfileState extends State<EditProfileScreen> {
                 ],
               ),
               RoundedInput(
-                  controller: nameController,
+                  controller: _nameController,
                   bgcolor: kRegisterBgColor,
                   color: kPrimaryColor,
                   hint: "Nombres",
                   icon: Icons.info_outline,
                   isEmail: false),
               RoundedInput(
-                  controller: lastnameController,
+                  controller: _lastnameController,
                   bgcolor: kRegisterBgColor,
                   color: kPrimaryColor,
                   hint: "Apellidos",
                   icon: Icons.info_outline,
                   isEmail: false),
               RoundedInput(
-                  controller: phoneController,
+                  controller: _phoneController,
                   bgcolor: kRegisterBgColor,
                   color: kPrimaryColor,
                   hint: "Telefono",
@@ -124,7 +106,7 @@ class _EditProfileState extends State<EditProfileScreen> {
                   isEmail: false),
               InkWell(
                 onTap: () {
-                  editUser();
+                  UserController.editUser(context, _nameController, _lastnameController, _phoneController, _imageFile);
                 },
                 borderRadius: BorderRadius.circular(30),
                 child: Container(
@@ -212,6 +194,12 @@ class _EditProfileState extends State<EditProfileScreen> {
       ),
     );
   }
+  //image piker
+  void _setImageFileListFromFile(XFile? value) {
+    _imageFile = (value == null ? null : <XFile>[value])!;
+  }
+
+  final ImagePickerPlatform _picker = ImagePickerPlatform.instance;
 
   void takePhoto(ImageSource source) async {
     try {

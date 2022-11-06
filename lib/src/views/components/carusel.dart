@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:hiddplace/src/models/publicationsUser.dart';
+import 'package:hiddplace/src/models/entity/publicationsUser.dart';
 
 class Carousel extends StatelessWidget {
 
