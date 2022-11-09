@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-import '../models/services/publications.dart';
+import '../models/repository/publications.dart';
 
 class CommentController{
   static void saveComment(String? publicationID, BuildContext context,commentController) async {

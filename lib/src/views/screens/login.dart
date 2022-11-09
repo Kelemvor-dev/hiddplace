@@ -76,6 +76,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             child: Align(
               alignment: Alignment.center,
               child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
                 child: SizedBox(
                   width: size.width,
                   height: defaultLoginSize,

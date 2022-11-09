@@ -7,7 +7,7 @@ import 'package:hiddplace/src/controllers/commentController.dart';
 import 'package:provider/provider.dart';
 import '../../views/components/navbar/popNavbar.dart';
 import '../../models/providers/profile.dart';
-import '../../models/services/publications.dart';
+import '../../models/repository/publications.dart';
 
 class Comments extends StatefulWidget {
   final String? publicationID;

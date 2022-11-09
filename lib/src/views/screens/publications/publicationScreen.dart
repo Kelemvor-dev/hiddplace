@@ -9,8 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:hiddplace/src/models/entity/publications.dart';
 import 'package:hiddplace/src/views/components/carusel.dart';
 
+import '../../../../utils/cachedNetworkImage.dart';
 import '../../../controllers/publicationController.dart';
-import '../../../models/services/publications.dart';
+import '../../widgets/profileModal.dart';
 
 class PublicationScreen extends StatefulWidget {
   const PublicationScreen({super.key});
@@ -28,9 +29,21 @@ class _PublicationScreenState extends State<PublicationScreen> with SingleTicker
         context: context,
         isScrollControlled: true,
         builder: (BuildContext context) {
-          return Comments(publicationID: publicationID,);
-        }
-    );
+          return Comments(
+            publicationID: publicationID,
+          );
+        });
+  }
+
+  _buildProfile(String? userId) {
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return ProfileModal(
+            userId: userId,
+          );
+        });
   }
 
   @override
@@ -69,48 +82,49 @@ class _PublicationScreenState extends State<PublicationScreen> with SingleTicker
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.9,
-                                      child: ListTile(
-                                        leading: Container(
-                                          width: 80.0,
-                                          height: 80.0,
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: kPrimaryColor,
-                                                offset: Offset(0, 2),
-                                                blurRadius: 6.0,
+                                InkWell(
+                                    onTap: () {
+                                      _buildProfile(publications[index].userID);
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.9,
+                                          child: ListTile(
+                                            leading: Container(
+                                              width: 80.0,
+                                              height: 80.0,
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: kPrimaryColor,
+                                                    offset: Offset(0, 2),
+                                                    blurRadius: 6.0,
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                          child: Container(
-                                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                                            decoration: const BoxDecoration(shape: BoxShape.circle),
-                                            child: publications[index].user!['imageUrl'] != ''
-                                                ? Image.network(
-                                                    publications[index].user!['imageUrl'],
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : Image.asset('assets/images/profile.jpeg'),
+                                              child: Container(
+                                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                                decoration: const BoxDecoration(shape: BoxShape.circle),
+                                                child: publications[index].user!['imageUrl'] != ''
+                                                    ? cachedNetworkImage(publications[index].user!['imageUrl'])
+                                                    : Image.asset('assets/images/profile.jpeg'),
+                                              ),
+                                            ),
+                                            title: Text(
+                                              '${publications[index].user!['name']} ${publications[index].user!['lastname']}',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                                '${publications[index].date?.toDate().day.toString()}-${publications[index].date?.toDate().month.toString()}-${publications[index].date?.toDate().year.toString()}'),
                                           ),
                                         ),
-                                        title: Text(
-                                          '${publications[index].user!['name']} ${publications[index].user!['lastname']}',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        subtitle: Text(
-                                            '${publications[index].date?.toDate().day.toString()}-${publications[index].date?.toDate().month.toString()}-${publications[index].date?.toDate().year.toString()}'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                      ],
+                                    )),
                                 Padding(
                                     padding: const EdgeInsets.only(left: 25, right: 25, top: 5),
                                     child: Text(
@@ -134,6 +148,7 @@ class _PublicationScreenState extends State<PublicationScreen> with SingleTicker
                                           color: kPrimaryColor),
                                     )),
                                 InkWell(
+                                  //Por si a futuro quiero agregar funcinalidad a las imagenes
                                   onDoubleTap: () => print('Like post'),
                                   child: Container(
                                       margin: const EdgeInsets.all(10.0),
@@ -169,13 +184,15 @@ class _PublicationScreenState extends State<PublicationScreen> with SingleTicker
                                                     color: UiColors.like,
                                                   ),
                                                   iconSize: 30.0,
-                                                  onPressed: () => PublicationController.unlikePublication(publications[index].id, publications[index].likes, userId,context),
+                                                  onPressed: () => PublicationController.unlikePublication(
+                                                      publications[index].id, publications[index].likes, userId, context),
                                                 ),
                                               ] else ...[
                                                 IconButton(
                                                   icon: const Icon(FontAwesomeIcons.thumbsUp),
                                                   iconSize: 30.0,
-                                                  onPressed: () => PublicationController.likePublication(publications[index].id, publications[index].likes, userId,context),
+                                                  onPressed: () => PublicationController.likePublication(
+                                                      publications[index].id, publications[index].likes, userId, context),
                                                 ),
                                               ],
                                               Text(

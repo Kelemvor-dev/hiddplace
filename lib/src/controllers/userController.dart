@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../models/services/firebaseAuthMethods.dart';
+import '../models/repository/firebaseAuthMethods.dart';
 
 class UserController{
   static void signUpUser(BuildContext context,nameController,lastnameController,phoneController,imageFile,emailController,passwordController) async {

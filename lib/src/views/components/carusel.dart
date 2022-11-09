@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:hiddplace/src/models/entity/publicationsUser.dart';
+
+import '../../../utils/cachedNetworkImage.dart';
 
 class Carousel extends StatelessWidget {
 
@@ -26,9 +27,7 @@ class Carousel extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children:<Widget> [
-            Image.network(e,
-              fit: BoxFit.cover,
-            )
+            cachedNetworkImage(e)
           ],
         ),
       )).toList(),

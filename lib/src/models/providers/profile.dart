@@ -30,6 +30,19 @@ class ProfileData with ChangeNotifier {
     _photoUrl = userDoc.get('photoUrl');
   }
 
+  Future getProfileByID(userID) async {
+    Map user = {};
+    final DocumentSnapshot userDoc =
+    await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    user = {
+      'userID': userID,
+      'name': userDoc.get('name'),
+      'lastname': userDoc.get('lastname'),
+      'imageUrl': userDoc.get('photoUrl'),
+    };
+    return user;
+  }
+
   String get name => _name;
 
   set name(String value) {

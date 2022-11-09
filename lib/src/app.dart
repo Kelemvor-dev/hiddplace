@@ -1,16 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hiddplace/constants.dart';
-import 'package:hiddplace/src/models/entity/comments.dart';
+import 'package:hiddplace/src/models/entity/followers.dart';
 import 'package:hiddplace/src/models/entity/publications.dart';
 import 'package:hiddplace/src/models/entity/publicationsUser.dart';
 import 'package:hiddplace/src/models/providers/profile.dart';
+import 'package:hiddplace/src/models/repository/follower.dart';
 import 'package:hiddplace/src/views/screens/home.dart';
 import 'package:hiddplace/src/views/screens/login.dart';
 import 'package:hiddplace/src/views/screens/publications/createPublicationScreen.dart';
 import 'package:hiddplace/src/views/screens/users/editProfile.dart';
-import 'package:hiddplace/src/models/services/firebaseAuthMethods.dart';
-import 'package:hiddplace/src/models/services/publications.dart';
+import 'package:hiddplace/src/models/repository/firebaseAuthMethods.dart';
+import 'package:hiddplace/src/models/repository/publications.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
@@ -28,6 +29,9 @@ class App extends StatelessWidget {
         Provider<Publications>(
           create: (_) => Publications(),
         ),
+        Provider<Follower>(
+          create: (_) => Follower(),
+        ),
         StreamProvider(
           create: (context) => context.read<FirebaseAuthMethods>().authState,
           initialData: null,
@@ -37,6 +41,10 @@ class App extends StatelessWidget {
         ),
         StreamProvider<List<Publication>>(
           create: (_) => Publications().getPublications(),
+          initialData: const [],
+        ),
+        StreamProvider<List<FollowersModel>>(
+          create: (_) => Follower().getFollowers(),
           initialData: const [],
         ),
         StreamProvider<List<PublicationUser>>(

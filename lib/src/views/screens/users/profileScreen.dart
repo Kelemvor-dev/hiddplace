@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:avatar_view/avatar_view.dart';
 
 import '../../../controllers/publicationController.dart';
+import '../../../models/repository/follower.dart';
+import '../../../models/repository/publications.dart';
 import '../../widgets/comments.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -58,7 +60,7 @@ class _ProfileState extends State<ProfileScreen> {
               Column(
                 children: [
                   Flexible(
-                    flex: 1,
+                    flex: 2,
                     child: Container(
                         decoration: const BoxDecoration(
                             // image: DecorationImage(
@@ -68,7 +70,7 @@ class _ProfileState extends State<ProfileScreen> {
                         child: Stack(
                           children: <Widget>[
                             Padding(
-                              padding: const EdgeInsets.only(top: 10, right: 0),
+                              padding: const EdgeInsets.only(top: 40),
                               child: Column(
                                 children: [
                                   if (context.watch<ProfileData>().photoUrl == '') ...[
@@ -89,7 +91,7 @@ class _ProfileState extends State<ProfileScreen> {
                                       ),
                                     ),
                                   ] else ...[
-                                    Container(
+                                    SizedBox(
                                         width: 130,
                                         child: CircleAvatar(backgroundImage: NetworkImage(context.watch<ProfileData>().photoUrl), radius: 65.0))
                                   ],
@@ -99,12 +101,98 @@ class _ProfileState extends State<ProfileScreen> {
                                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 22)),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 20.0, left: 42, right: 32),
+                                    padding: const EdgeInsets.only(top: 3.0),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       mainAxisSize: MainAxisSize.max,
-                                      //Si quiero agregar mas cosas dentro del perfil children: [],
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            children: [
+                                              StreamBuilder(
+                                                  stream: Publications().getNumPublicationsByUser(userId),
+                                                  builder: (context, publications) {
+                                                    return Padding(
+                                                      padding: const EdgeInsets.only(left: 10, right: 8),
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            (publications.data?.docs != null) ? '${publications.data?.docs!.length}' : '0',
+                                                            style: GoogleFonts.montserrat(
+                                                                textStyle: Theme.of(context).textTheme.headline4,
+                                                                fontSize: 14,
+                                                                fontWeight: FontWeight.w400,
+                                                                color: UiColors.white),
+                                                          ),
+                                                          Text(
+                                                            'Publicaciones',
+                                                            style: GoogleFonts.montserrat(
+                                                                textStyle: Theme.of(context).textTheme.headline4,
+                                                                fontSize: 13,
+                                                                fontWeight: FontWeight.w400,
+                                                                color: UiColors.white),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }),
+                                              StreamBuilder(
+                                                  stream: Follower().getfollowedsByID(userId),
+                                                  builder: (context, followers) {
+                                                    return Padding(
+                                                      padding: const EdgeInsets.only(right: 8),
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            (followers.data?.docs != null) ? '${followers.data?.docs!.length}' : '0',
+                                                            style: GoogleFonts.montserrat(
+                                                                textStyle: Theme.of(context).textTheme.headline4,
+                                                                fontSize: 14,
+                                                                fontWeight: FontWeight.w400,
+                                                                color: UiColors.white),
+                                                          ),
+                                                          Text(
+                                                            'Seguidores',
+                                                            style: GoogleFonts.montserrat(
+                                                                textStyle: Theme.of(context).textTheme.headline4,
+                                                                fontSize: 13,
+                                                                fontWeight: FontWeight.w400,
+                                                                color: UiColors.white),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }),
+                                              StreamBuilder(
+                                                  stream: Follower().getFollowersByID(userId),
+                                                  builder: (context, followed) {
+                                                    return Column(
+                                                      children: [
+                                                        Text(
+                                                          (followed.data?.docs != null) ? '${followed.data?.docs!.length}' : '0',
+                                                          style: GoogleFonts.montserrat(
+                                                              textStyle: Theme.of(context).textTheme.headline4,
+                                                              fontSize: 14,
+                                                              fontWeight: FontWeight.w400,
+                                                              color: UiColors.white),
+                                                        ),
+                                                        Text(
+                                                          'Seguidos',
+                                                          style: GoogleFonts.montserrat(
+                                                              textStyle: Theme.of(context).textTheme.headline4,
+                                                              fontSize: 13,
+                                                              fontWeight: FontWeight.w400,
+                                                              color: UiColors.white),
+                                                        )
+                                                      ],
+                                                    );
+                                                  })
+                                            ],
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -186,7 +274,8 @@ class _ProfileState extends State<ProfileScreen> {
                                                                       color: UiColors.error,
                                                                     ),
                                                                     color: Colors.black,
-                                                                    onPressed: () => PublicationController.deletePublication(publications[index].id,userId,context),
+                                                                    onPressed: () => PublicationController.deletePublication(
+                                                                        publications[index].id, userId, context),
                                                                   ),
                                                                 ),
                                                               ),
@@ -251,14 +340,14 @@ class _ProfileState extends State<ProfileScreen> {
                                                                             ),
                                                                             iconSize: 30.0,
                                                                             onPressed: () => PublicationController.unlikePublication(
-                                                                                publications[index].id, publications[index].likes, userId,context),
+                                                                                publications[index].id, publications[index].likes, userId, context),
                                                                           ),
                                                                         ] else ...[
                                                                           IconButton(
                                                                             icon: const Icon(FontAwesomeIcons.thumbsUp),
                                                                             iconSize: 30.0,
                                                                             onPressed: () => PublicationController.likePublication(
-                                                                                publications[index].id, publications[index].likes, userId,context),
+                                                                                publications[index].id, publications[index].likes, userId, context),
                                                                           ),
                                                                         ],
                                                                         Text(

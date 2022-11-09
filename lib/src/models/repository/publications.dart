@@ -29,11 +29,14 @@ class Publications {
     return list;
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getNumPublicationsByUser(userID) {
+    return _db.collection('publications')
+        .where("userID", isEqualTo: userID)
+        .orderBy('timestamp', descending: true).snapshots();
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getComments(publicationID) {
-    return _db.collection('comments')
-        .where("publicationID", isEqualTo: publicationID)
-        .orderBy('timestamp', descending: true)
-        .snapshots();
+    return _db.collection('comments').where("publicationID", isEqualTo: publicationID).orderBy('timestamp', descending: true).snapshots();
   }
 
   Stream<List<PublicationUser>> getPublicationsByUserID() {
@@ -162,7 +165,7 @@ class Publications {
       'publicationID': publicationID,
       'user': user,
       'comment': comment,
-      'likes':likes,
+      'likes': likes,
       'timestamp': datenow,
     });
   }
