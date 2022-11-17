@@ -8,6 +8,13 @@ class ProfileData with ChangeNotifier {
   String _uid = '';
   String _name = '';
   String _lastname = '';
+
+  String get uid => _uid;
+
+  set uid(String value) {
+    _uid = value;
+  }
+
   String _phone = '';
 
   String get phone => _phone;

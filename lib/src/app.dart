@@ -5,7 +5,10 @@ import 'package:hiddplace/src/models/entity/followers.dart';
 import 'package:hiddplace/src/models/entity/publications.dart';
 import 'package:hiddplace/src/models/entity/publicationsUser.dart';
 import 'package:hiddplace/src/models/providers/profile.dart';
+import 'package:hiddplace/src/models/repository/chat.dart';
 import 'package:hiddplace/src/models/repository/follower.dart';
+import 'package:hiddplace/src/views/screens/chat/chatTalkScreen.dart';
+import 'package:hiddplace/src/views/screens/chat/newTalkScreen.dart';
 import 'package:hiddplace/src/views/screens/home.dart';
 import 'package:hiddplace/src/views/screens/login.dart';
 import 'package:hiddplace/src/views/screens/publications/createPublicationScreen.dart';
@@ -16,8 +19,6 @@ import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
-
-  get publicationID => null;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,9 @@ class App extends StatelessWidget {
         ),
         Provider<Follower>(
           create: (_) => Follower(),
+        ),
+        Provider<Chat>(
+          create: (_) => Chat(),
         ),
         StreamProvider(
           create: (context) => context.read<FirebaseAuthMethods>().authState,
@@ -63,6 +67,8 @@ class App extends StatelessWidget {
           'home': (context) => const AuthWrapper(),
           'editProfile': (context) => const EditProfileScreen(),
           'createPublication': (context) => const CreatePublicationScreen(),
+          'newTalk': (context) => const NewTalkScreen(),
+          'chatTalk': (context) => const ChatTalkScreen(),
         },
       ),
     );

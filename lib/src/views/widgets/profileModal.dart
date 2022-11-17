@@ -1,11 +1,9 @@
 import 'package:avatar_view/avatar_view.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiddplace/constants.dart';
 import 'package:hiddplace/src/controllers/followerController.dart';
-import 'package:hiddplace/src/models/entity/publications.dart';
 import 'package:hiddplace/src/models/providers/profile.dart';
 import 'package:hiddplace/src/models/repository/follower.dart';
 import 'package:hiddplace/src/models/repository/publications.dart';
@@ -84,7 +82,7 @@ class _ProfileModalState extends State<ProfileModal> {
                                         child: Column(
                                           children: [
                                             Text(
-                                              (publications.data?.docs != null) ? '${publications.data?.docs!.length}' : '0',
+                                              (publications.data?.docs != null) ? '${publications.data?.docs.length}' : '0',
                                               style: GoogleFonts.montserrat(
                                                   textStyle: Theme.of(context).textTheme.headline4,
                                                   fontSize: 14,
@@ -112,7 +110,7 @@ class _ProfileModalState extends State<ProfileModal> {
                                           child: Column(
                                             children: [
                                               Text(
-                                                (followers.data?.docs != null) ? '${followers.data?.docs!.length}' : '0',
+                                                (followers.data?.docs != null) ? '${followers.data?.docs.length}' : '0',
                                                 style: GoogleFonts.montserrat(
                                                     textStyle: Theme.of(context).textTheme.headline4,
                                                     fontSize: 14,
@@ -137,7 +135,7 @@ class _ProfileModalState extends State<ProfileModal> {
                                         return Column(
                                           children: [
                                             Text(
-                                              (followed.data?.docs != null) ? '${followed.data?.docs!.length}' : '0',
+                                              (followed.data?.docs != null) ? '${followed.data?.docs.length}' : '0',
                                               style: GoogleFonts.montserrat(
                                                   textStyle: Theme.of(context).textTheme.headline4,
                                                   fontSize: 14,

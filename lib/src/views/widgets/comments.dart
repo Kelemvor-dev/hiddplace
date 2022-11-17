@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hiddplace/constants.dart';
 import 'package:hiddplace/src/controllers/commentController.dart';
 import 'package:provider/provider.dart';
+import '../../../utils/cachedNetworkImage.dart';
 import '../../views/components/navbar/popNavbar.dart';
 import '../../models/providers/profile.dart';
 import '../../models/repository/publications.dart';
@@ -60,7 +61,6 @@ class _CommentsState extends State<Comments> {
                     borderSide: const BorderSide(color: Colors.grey),
                   ),
                   contentPadding: const EdgeInsets.all(10.0),
-                  hintText: '  Add a comment',
                   prefixIcon: Container(
                     margin: const EdgeInsets.all(4.0),
                     width: 48.0,
@@ -86,15 +86,14 @@ class _CommentsState extends State<Comments> {
                           : Image.asset('assets/images/profile.jpeg'),
                     ),
                   ),
-                  suffixIcon: Container(
-                    margin: const EdgeInsets.only(right: 4.0),
-                    width: 70.0,
+                  suffixIcon: SizedBox(
+                    width: 60.0,
                     child: FloatingActionButton(
                       backgroundColor: kPrimaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
                       ),
-                      onPressed: () => { CommentController.saveComment(widget.publicationID,context,commentController), commentController.text = ''},
+                      onPressed: () => {CommentController.saveComment(widget.publicationID, context, commentController), commentController.text = ''},
                       child: const Icon(
                         Icons.send,
                         size: 25.0,
@@ -139,9 +138,8 @@ class _CommentsState extends State<Comments> {
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
                                       decoration: const BoxDecoration(shape: BoxShape.circle),
                                       child: snapshot.data?.docs[index].data()['user']['imageUrl'] != ''
-                                          ? Image.network(
-                                              snapshot.data?.docs[index].data()['user']['imageUrl'],
-                                              fit: BoxFit.cover,
+                                          ? cachedNetworkImage(
+                                              snapshot.data?.docs[index].data()['user']['imageUrl']
                                             )
                                           : Image.asset('assets/images/profile.jpeg'),
                                     ),
@@ -171,7 +169,7 @@ class _CommentsState extends State<Comments> {
                                             ),
                                             iconSize: 30.0,
                                             onPressed: () => CommentController.unlikeComment(
-                                                snapshot.data?.docs[index].data()['id'], snapshot.data?.docs[index].data()['likes'], userId,context),
+                                                snapshot.data?.docs[index].data()['id'], snapshot.data?.docs[index].data()['likes'], userId, context),
                                           )
                                         ])
                                       : Row(mainAxisSize: MainAxisSize.min, children: [
@@ -188,7 +186,7 @@ class _CommentsState extends State<Comments> {
                                             icon: const Icon(FontAwesomeIcons.thumbsUp),
                                             iconSize: 30.0,
                                             onPressed: () => CommentController.likeComment(
-                                                snapshot.data?.docs[index].data()['id'], snapshot.data?.docs[index].data()['likes'], userId,context),
+                                                snapshot.data?.docs[index].data()['id'], snapshot.data?.docs[index].data()['likes'], userId, context),
                                           )
                                         ]),
                                 ),

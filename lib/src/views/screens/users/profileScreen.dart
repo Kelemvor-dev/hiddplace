@@ -10,6 +10,7 @@ import 'package:hiddplace/src/models/providers/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:avatar_view/avatar_view.dart';
 
+import '../../../../utils/cachedNetworkImage.dart';
 import '../../../controllers/publicationController.dart';
 import '../../../models/repository/follower.dart';
 import '../../../models/repository/publications.dart';
@@ -255,9 +256,8 @@ class _ProfileState extends State<ProfileScreen> {
                                                                       clipBehavior: Clip.antiAliasWithSaveLayer,
                                                                       decoration: const BoxDecoration(shape: BoxShape.circle),
                                                                       child: publications[index].user!['imageUrl'] != ''
-                                                                          ? Image.network(
-                                                                              publications[index].user!['imageUrl'],
-                                                                              fit: BoxFit.cover,
+                                                                          ? cachedNetworkImage(
+                                                                              publications[index].user!['imageUrl']
                                                                             )
                                                                           : Image.asset('assets/images/profile.jpeg'),
                                                                     ),

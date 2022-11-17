@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiddplace/constants.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -42,7 +41,6 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _NavbarState extends State<Navbar> {
-  ItemScrollController _scrollController = ItemScrollController();
 
   @override
   void initState() {
@@ -57,7 +55,7 @@ class _NavbarState extends State<Navbar> {
         height: 55,
         decoration: BoxDecoration(color: !widget.transparent ? widget.bgColor : Colors.transparent, boxShadow: [
           BoxShadow(
-              color: !widget.transparent && !widget.noShadow ? UiColors.Kmuted : Colors.transparent,
+              color: !widget.transparent && !widget.noShadow ? UiColors.kmuted : Colors.transparent,
               spreadRadius: -10,
               blurRadius: 12,
               offset: const Offset(0, 5))

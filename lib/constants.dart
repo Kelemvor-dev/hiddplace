@@ -6,9 +6,9 @@ const kSecundaryColor = Color(0xFFEDEAE3);
 const kRegisterBgColor = Color(0xFFEDEAE3);
 
 class UiColors {
-  static const Color Ktabs = Color.fromRGBO(222, 222, 222, 0.3);
+  static const Color ktabs = Color.fromRGBO(222, 222, 222, 0.3);
 
-  static const Color Kmuted = Color.fromRGBO(136, 152, 170, 1.0);
+  static const Color kmuted = Color.fromRGBO(136, 152, 170, 1.0);
 
   static const Color like = Color.fromRGBO(255, 0, 0, 1.0);
 
