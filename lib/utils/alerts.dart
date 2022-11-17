@@ -15,7 +15,7 @@ class Alert {
                 alignment: Alignment.topCenter,
                 children: [
                   Container(
-                    height: 200,
+                    height: 225,
                     width: double.infinity,
                     color: kPrimaryColor,
                     child: Padding(
@@ -33,7 +33,7 @@ class Alert {
                           Text(
                             message,
                             style: GoogleFonts.montserrat(
-                                textStyle: Theme.of(context).textTheme.headline4, fontSize: 16, fontWeight: FontWeight.w400, color: UiColors.white),
+                                textStyle: Theme.of(context).textTheme.headline4, fontSize: 14, fontWeight: FontWeight.w400, color: UiColors.white),
                           ),
                           const SizedBox(
                             height: 15,
