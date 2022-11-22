@@ -11,6 +11,8 @@ import 'package:hiddplace/src/views/screens/publications/publicationScreen.dart'
 import 'package:hiddplace/src/views/screens/users/profileScreen.dart';
 import 'package:provider/provider.dart';
 
+import '../../../api/notification_api.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -29,7 +31,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     //
-
+    Provider.of<NotificationApi>(context,listen: false).initNotifications();
     animationController = AnimationController(vsync: this, duration: animationDuration);
     //Llamamos la informacion del perfil en la base de datos(Firestore) con Provider
     Provider.of<ProfileData>(context, listen: false).getProfile();

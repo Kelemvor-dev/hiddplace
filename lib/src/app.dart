@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hiddplace/api/notification_api.dart';
 import 'package:hiddplace/constants.dart';
 import 'package:hiddplace/src/models/entity/followers.dart';
 import 'package:hiddplace/src/models/entity/publications.dart';
@@ -55,6 +56,7 @@ class App extends StatelessWidget {
           create: (_) => Publications().getPublicationsByUserID(),
            initialData: const [],
          ),
+        ChangeNotifierProvider(create: (_) => NotificationApi())
       ],
       child: MaterialApp(
         title: 'Hiddplace',

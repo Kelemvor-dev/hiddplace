@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../entity/chat.dart';
 
 class Chat {
   final chatRef = FirebaseFirestore.instance.collection('chat');
   final DateTime datenow = DateTime.now();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final userId = FirebaseAuth.instance.currentUser?.uid;
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getChatByUserID(userID) {
     var list = _db.collection('chat').where('users', arrayContains: userID).orderBy('timestamp', descending: true).snapshots();
@@ -37,7 +37,7 @@ class Chat {
     users.add(userID!);
     users.add(followedID!);
     Map talks = {
-      'userID':userID,
+      'userID': userID,
       'imageUrl': imageUrl,
       'comment': comment,
       'timestamp': datenow,
@@ -55,12 +55,13 @@ class Chat {
     required String? id,
     required String? comment,
     required String userID,
+    required String? followedID,
     required String? imageUrl,
     required List<dynamic>? chat,
     required BuildContext context,
   }) async {
     Map updatechat = {
-      'userID': userID,
+      'userID': followedID,
       'imageUrl': imageUrl,
       'comment': comment,
       'timestamp': datenow,

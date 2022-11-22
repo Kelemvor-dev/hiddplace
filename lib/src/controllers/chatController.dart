@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:hiddplace/src/models/repository/chat.dart';
 import 'package:provider/provider.dart';
 
-import '../models/entity/chat.dart';
 
 class ChatController {
   final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -20,11 +19,12 @@ class ChatController {
         );
   }
 
-  static void saveTalkChat(String? id, commentController, imageUrl,userID, chat, BuildContext context) async {
+  static void saveTalkChat(String? id, commentController, imageUrl, userID, followedID, chat, BuildContext context) async {
     context.read<Chat>().saveTalkChat(
           id: id,
           context: context,
           userID: userID,
+          followedID: followedID,
           comment: commentController.text,
           imageUrl: imageUrl,
           chat: chat,

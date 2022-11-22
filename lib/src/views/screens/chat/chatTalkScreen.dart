@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hiddplace/api/notification_api.dart';
 import 'package:hiddplace/src/controllers/chatController.dart';
 import 'package:hiddplace/src/models/repository/chat.dart';
 import 'package:hiddplace/src/models/repository/users.dart';
@@ -123,6 +124,7 @@ class _ChatTalkScreenState extends State<ChatTalkScreen> {
                                   commentController,
                                   Provider.of<ProfileData>(context, listen: false).photoUrl,
                                   Provider.of<ProfileData>(context, listen: false).uid,
+                                  args['followedID'],
                                   chat,
                                   context),
                               commentController.text = ''
@@ -162,6 +164,14 @@ class _ChatTalkScreenState extends State<ChatTalkScreen> {
                                             padding: const EdgeInsets.all(5.5),
                                             itemCount: snapshot.data?.docs[index].data()['chat'].length,
                                             itemBuilder: (context, indexChat) {
+                                              //Intento de Notificaciones locales con Streams
+                                              // if (indexChat+1 >= snapshot.data?.docs[index].data()['chat'].length && userId == snapshot.data?.docs[index].data()['chat'][indexChat]['userID']) {
+                                              //   NotificationApi().showNotification(
+                                              //       id: 0,
+                                              //       title: "Nuevo mensaje",
+                                              //       body: snapshot.data?.docs[index].data()['chat'][indexChat]['comment'],
+                                              //       followedID: args['followedID']);
+                                              // }
                                               DateTime date = (snapshot.data?.docs[index].data()['chat'][indexChat]['timestamp']).toDate();
                                               return Container(
                                                 margin: const EdgeInsets.only(top: 10),
